@@ -1,16 +1,20 @@
 package com.example.spring_auth_tutorial.member.service
 
 import com.example.spring_auth_tutorial.common.exception.InvalidInputException
+import com.example.spring_auth_tutorial.common.status.ROLE
 import com.example.spring_auth_tutorial.member.dto.MemberDtoRequest
 import com.example.spring_auth_tutorial.member.entity.Member
+import com.example.spring_auth_tutorial.member.entity.MemberRole
 import com.example.spring_auth_tutorial.member.repository.MemberRepository
+import com.example.spring_auth_tutorial.member.repository.MemberRoleRepository
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 
 @Transactional
 @Service
 class MemberService(
-    private val memberRepository: MemberRepository
+    private val memberRepository: MemberRepository,
+    private val memberRoleRepository: MemberRoleRepository
 ) {
     // 회원 가입
     fun signUp(memberDtoRequest: MemberDtoRequest): String {
@@ -22,6 +26,9 @@ class MemberService(
 
         member = memberDtoRequest.toEntity()
         memberRepository.save(member)
+
+        val memberRole: MemberRole = MemberRole(null, ROLE.MEMBER, member)
+        memberRoleRepository.save(memberRole)
 
         return "회원가입이 완료되었습니다."
     }

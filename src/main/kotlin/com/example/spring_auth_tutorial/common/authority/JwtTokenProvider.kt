@@ -81,5 +81,5 @@ class JwtTokenProvider {
         return false
     }
     private fun getClaims(token: String): Claims =
-        Jwts.parser().setSigningKey(key).build().parseClaimsJwt(token).body
+        Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJwt(token).body
 }

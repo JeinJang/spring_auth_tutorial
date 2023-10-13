@@ -1,6 +1,8 @@
 package com.example.spring_auth_tutorial.member.controller
 
+import com.example.spring_auth_tutorial.common.authority.TokenInfo
 import com.example.spring_auth_tutorial.common.dto.BaseResponse
+import com.example.spring_auth_tutorial.member.dto.LoginDto
 import com.example.spring_auth_tutorial.member.dto.MemberDtoRequest
 import com.example.spring_auth_tutorial.member.service.MemberService
 import jakarta.validation.Valid
@@ -18,5 +20,11 @@ class MemberController(
     fun signUp(@RequestBody @Valid memberDtoRequest: MemberDtoRequest): BaseResponse<Unit> {
         val resultMsg: String = memberService.signUp(memberDtoRequest)
         return BaseResponse(message = resultMsg)
+    }
+
+    @PostMapping("/login")
+    fun login(@RequestBody @Valid loginDto: LoginDto): BaseResponse<TokenInfo> {
+        val tokenInfo = memberService.login(loginDto)
+        return BaseResponse(data = tokenInfo)
     }
 }
